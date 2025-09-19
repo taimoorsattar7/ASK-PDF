@@ -1,161 +1,185 @@
 import { useState } from 'react';
-import { FileText, MessageSquare, Zap, Shield } from 'lucide-react';
+import { FileText, Copy, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { PDFUpload } from '@/components/PDFUpload';
-import { ChatInterface } from '@/components/ChatInterface';
-import heroImage from '@/assets/hero-illustration.jpg';
-
-interface UploadedPDF {
-  id: string;
-  name: string;
-  size: number;
-  file: File;
-}
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
-  const [uploadedPDFs, setUploadedPDFs] = useState<UploadedPDF[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [question, setQuestion] = useState('');
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
-  const features = [
-    {
-      icon: FileText,
-      title: 'Multiple PDF Support',
-      description: 'Upload and analyze multiple PDF documents simultaneously for comprehensive insights.'
-    },
-    {
-      icon: MessageSquare,
-      title: 'Intelligent Q&A',
-      description: 'Ask natural language questions and get precise answers from your document content.'
-    },
-    {
-      icon: Zap,
-      title: 'Instant Processing',
-      description: 'Advanced AI processes your documents quickly to provide immediate responses.'
-    },
-    {
-      icon: Shield,
-      title: 'Secure & Private',
-      description: 'Your documents are processed securely with privacy protection built-in.'
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const pdfFiles = files.filter(file => file.type === 'application/pdf');
+    
+    if (pdfFiles.length !== files.length) {
+      toast({
+        title: "Invalid files",
+        description: "Please select only PDF files.",
+        variant: "destructive",
+      });
+      return;
     }
-  ];
+    
+    setSelectedFiles(pdfFiles);
+    toast({
+      title: `${pdfFiles.length} PDF${pdfFiles.length > 1 ? 's' : ''} selected`,
+      description: "Ready to ask questions about your documents.",
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (selectedFiles.length === 0) {
+      toast({
+        title: "No files selected",
+        description: "Please select at least one PDF file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!question.trim()) {
+      toast({
+        title: "No question provided",
+        description: "Please enter a question about your documents.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setResult('');
+
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file, index) => {
+        formData.append(`file_${index}`, file);
+      });
+      formData.append('question', question);
+
+      const { data, error } = await supabase.functions.invoke('extract-text-pdf', {
+        body: formData,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      setResult(data?.result || 'No result returned');
+      toast({
+        title: "Analysis complete",
+        description: "Your PDF analysis is ready.",
+      });
+    } catch (error) {
+      console.error('Error calling function:', error);
+      toast({
+        title: "Error",
+        description: "Failed to process your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(result);
+    toast({
+      title: "Copied!",
+      description: "Result copied to clipboard.",
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-hero opacity-95" />
-        <div className="absolute inset-0 bg-background/10" />
-        
-        <div className="relative container mx-auto px-4 py-20 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
-                Ask Anything About Your
-                <span className="block gradient-text bg-clip-text text-transparent bg-gradient-to-r from-primary-glow to-accent-glow">
-                  PDF Documents
-                </span>
-              </h1>
-              <p className="text-xl lg:text-2xl text-primary-foreground/90 mb-8 leading-relaxed">
-                Upload multiple PDFs and get instant, intelligent answers to any questions about their content using advanced AI.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="glass" size="xl" className="text-lg">
-                  Get Started Free
-                </Button>
-                <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                  Learn More
-                </Button>
-              </div>
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Logo and Header */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-3">
+            <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
+              <FileText className="w-7 h-7 text-primary-foreground" />
             </div>
-            
-            <div className="relative">
-              <div className="absolute inset-0 gradient-glow rounded-3xl blur-3xl opacity-30" />
-              <img 
-                src={heroImage} 
-                alt="PDF Q&A Application" 
-                className="relative w-full h-auto rounded-3xl shadow-elevated border border-primary-foreground/20"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-surface/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Powerful Features for Document Analysis
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Experience the future of document interaction with our AI-powered platform
-            </p>
+            <h1 className="text-3xl font-bold text-foreground">PDF Q&A</h1>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="p-6 text-center shadow-card bg-surface/50 border-border/50 hover:shadow-elevated transition-smooth hover:scale-105">
-                <div className="w-16 h-16 mx-auto mb-6 gradient-primary rounded-2xl flex items-center justify-center">
-                  <feature.icon className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Application Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Try It Now
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Upload your PDFs and start asking questions immediately
-            </p>
-          </div>
-          
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* PDF Upload Section */}
-            <div>
-              <h3 className="text-2xl font-semibold text-foreground mb-6">
-                1. Upload Your Documents
-              </h3>
-              <PDFUpload onPDFsProcessed={setUploadedPDFs} />
-            </div>
-            
-            {/* Chat Interface Section */}
-            <div>
-              <h3 className="text-2xl font-semibold text-foreground mb-6">
-                2. Ask Questions
-              </h3>
-              <ChatInterface hasDocuments={uploadedPDFs.length > 0} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 bg-surface">
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-foreground">PDF Q&A</span>
-          </div>
-          <p className="text-muted-foreground">
-            Powered by advanced AI • Built with modern web technologies
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Upload multiple PDF documents and ask questions to get instant, intelligent answers about their content using advanced AI technology.
           </p>
         </div>
-      </footer>
+
+        {/* Main Form */}
+        <Card className="p-8 space-y-6">
+          {/* PDF Upload */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-foreground">
+              Select PDF Files
+            </label>
+            <div className="flex items-center gap-4">
+              <Input
+                type="file"
+                multiple
+                accept=".pdf"
+                onChange={handleFileSelect}
+                className="flex-1"
+              />
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Upload className="w-4 h-4" />
+                {selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''} selected
+              </div>
+            </div>
+          </div>
+
+          {/* Question Input */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-foreground">
+              Ask a Question
+            </label>
+            <Textarea
+              placeholder="What would you like to know about your PDF documents?"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              className="min-h-[100px]"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button 
+            onClick={handleSubmit} 
+            disabled={loading || selectedFiles.length === 0}
+            className="w-full"
+            size="lg"
+          >
+            {loading ? 'Processing...' : 'Submit Question'}
+          </Button>
+        </Card>
+
+        {/* Results */}
+        {result && (
+          <Card className="p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-foreground">Result</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={copyToClipboard}
+                className="flex items-center gap-2"
+              >
+                <Copy className="w-4 h-4" />
+                Copy
+              </Button>
+            </div>
+            <div className="bg-surface p-4 rounded-lg border border-border">
+              <p className="text-foreground whitespace-pre-wrap">{result}</p>
+            </div>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };
