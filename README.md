@@ -1,73 +1,172 @@
-# Welcome to your Lovable project
+# Ask PDF - AI-Powered Document Analysis
 
-## Project info
+A modern web application that enables users to upload multiple PDF documents and ask questions about their content using advanced AI technology. Get instant, intelligent answers from your documents with a clean, minimalist interface.
 
-**URL**: https://lovable.dev/projects/9e58ca94-1fa6-472e-a535-a4f396c93ee4
+## 🚀 Features
 
-## How can I edit this code?
+- **Multi-PDF Upload**: Upload and analyze multiple PDF documents simultaneously
+- **AI-Powered Q&A**: Ask natural language questions about your document content
+- **Instant Answers**: Get intelligent responses powered by advanced AI models
+- **Clean Interface**: Minimalist design with #EBEBEB color scheme for optimal readability
+- **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
+- **SEO Optimized**: Fully optimized for search engines with proper meta tags and structured data
+- **Secure Processing**: Documents are processed securely using Supabase edge functions
 
-There are several ways of editing your application.
+## 🛠️ Technology Stack
 
-**Use Lovable**
+- **Frontend**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **UI Components**: shadcn/ui component library
+- **Backend**: Supabase (Edge Functions, Database)
+- **Build Tool**: Vite
+- **AI Integration**: Custom AI API for document analysis
+- **File Processing**: PDF text extraction via Supabase functions
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9e58ca94-1fa6-472e-a535-a4f396c93ee4) and start prompting.
+## 🏗️ Architecture
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   React App     │    │  Supabase Edge   │    │   AI Service    │
+│                 │    │    Functions     │    │                 │
+│ • File Upload   ├────┤                  ├────┤ • Text Analysis │
+│ • Q&A Interface │    │ • PDF Processing │    │ • Answer Gen    │
+│ • Results Display│    │ • Text Extract   │    │                 │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
-**Edit a file directly in GitHub**
+## 🚀 Getting Started
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Node.js (v18 or higher)
+- npm or yarn package manager
+- Supabase account for backend services
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Installation
 
-## What technologies are used for this project?
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd ask-pdf
+   ```
 
-This project is built with:
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3. **Environment Setup**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+   VITE_SUPABASE_PROJECT_ID=your_project_id
+   ```
 
-## How can I deploy this project?
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/9e58ca94-1fa6-472e-a535-a4f396c93ee4) and click on Share -> Publish.
+5. **Open your browser**
+   
+   Navigate to `http://localhost:5173`
 
-## Can I connect a custom domain to my Lovable project?
+## 🔧 Configuration
 
-Yes, you can!
+### Supabase Setup
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Create a new Supabase project
+2. Deploy the `extract-text-pdf` edge function
+3. Configure CORS settings for your domain
+4. Update environment variables with your project credentials
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### AI Service Configuration
+
+The app integrates with an external AI service for document analysis. Ensure the AI endpoint is properly configured and accessible.
+
+## 📱 Usage
+
+1. **Upload PDFs**: Click the file input to select one or more PDF documents
+2. **Ask Questions**: Type your question about the document content in the textarea
+3. **Get Answers**: Click "Submit Question" to process your request
+4. **View Results**: The AI-generated answer will appear below the form
+5. **Copy Results**: Use the copy button to save answers to your clipboard
+
+## 🎨 Design System
+
+The application uses a minimal design approach with:
+
+- **Primary Color**: #EBEBEB and its variations
+- **Background**: Clean white (#FFFFFF)
+- **Typography**: System fonts with proper contrast ratios
+- **Components**: Semantic HTML with ARIA labels for accessibility
+- **Responsive**: Mobile-first design with breakpoints for all devices
+
+## 🔒 Security & Privacy
+
+- PDF processing happens on secure Supabase edge functions
+- No documents are permanently stored on our servers
+- All communications are encrypted in transit
+- User data is processed according to privacy best practices
+
+## 📊 SEO Features
+
+- **Meta Tags**: Comprehensive meta tags for social sharing
+- **Structured Data**: JSON-LD markup for search engines
+- **Semantic HTML**: Proper heading hierarchy and landmarks
+- **Performance**: Optimized loading and Core Web Vitals
+- **Mobile-Friendly**: Responsive design with proper viewport settings
+
+## 🚀 Deployment
+
+### Using Lovable Platform
+
+1. Connect your GitHub repository to Lovable
+2. Click the "Publish" button in the Lovable editor
+3. Your app will be deployed automatically
+
+### Manual Deployment
+
+1. **Build the project**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy to your preferred platform**
+   - Netlify: Connect GitHub repository and deploy
+   - Vercel: Import project and configure build settings
+   - AWS S3/CloudFront: Upload build files to S3 bucket
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [Issues](../../issues) section
+2. Create a new issue with detailed information
+3. Provide steps to reproduce any bugs
+
+## 🔄 Changelog
+
+### v1.0.0 (Latest)
+- Initial release with PDF upload and AI Q&A functionality
+- Minimalist design with #EBEBEB color scheme
+- SEO optimization and accessibility features
+- Supabase integration for backend services
+
+---
+
+**Built with ❤️ using React, Supabase, and AI technology**

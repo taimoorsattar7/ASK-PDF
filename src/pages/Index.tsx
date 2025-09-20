@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { FileText, Copy, Upload } from 'lucide-react';
+import { Copy, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import logoImage from '@/assets/logo.png';
 
 const Index = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -115,90 +116,103 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <main className="min-h-screen bg-background p-6 border border-border">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Logo and Header */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-              <FileText className="w-7 h-7 text-primary-foreground" />
-            </div>
-            <h1 className="text-3xl font-bold text-foreground">PDF Q&A</h1>
-          </div>
-          
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload multiple PDF documents and ask questions to get instant, intelligent answers about their content using advanced AI technology.
-          </p>
-        </div>
-
-        {/* Main Form */}
-        <Card className="p-8 space-y-6">
-          {/* PDF Upload */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">
-              Select PDF Files
-            </label>
-            <div className="flex items-center gap-4">
-              <Input
-                type="file"
-                multiple
-                accept=".pdf"
-                onChange={handleFileSelect}
-                className="flex-1"
-              />
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Upload className="w-4 h-4" />
-                {selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''} selected
-              </div>
-            </div>
-          </div>
-
-          {/* Question Input */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">
-              Ask a Question
-            </label>
-            <Textarea
-              placeholder="What would you like to know about your PDF documents?"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              className="min-h-[100px]"
+        <header className="text-center space-y-6">
+          <div className="inline-flex items-center gap-4">
+            <img 
+              src={logoImage} 
+              alt="Ask PDF Logo" 
+              className="h-16 w-auto"
             />
           </div>
+          
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold text-foreground">Ask PDF</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Upload multiple PDF documents and ask questions to get instant, intelligent answers about their content using advanced AI technology.
+            </p>
+          </div>
+        </header>
 
-          {/* Submit Button */}
-          <Button 
-            onClick={handleSubmit} 
-            disabled={loading || selectedFiles.length === 0}
-            className="w-full"
-            size="lg"
-          >
-            {loading ? 'Processing...' : 'Submit Question'}
-          </Button>
-        </Card>
+        {/* Main Form */}
+        <section>
+          <Card className="p-8 space-y-6 border border-border">
+            {/* PDF Upload */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">
+                Select PDF Files
+              </label>
+              <div className="flex items-center gap-4">
+                <Input
+                  type="file"
+                  multiple
+                  accept=".pdf"
+                  onChange={handleFileSelect}
+                  className="flex-1"
+                  aria-label="Upload PDF files"
+                />
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Upload className="w-4 h-4" />
+                  {selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''} selected
+                </div>
+              </div>
+            </div>
+
+            {/* Question Input */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">
+                Ask a Question
+              </label>
+              <Textarea
+                placeholder="What would you like to know about your PDF documents?"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className="min-h-[100px]"
+                aria-label="Question about PDF documents"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-center">
+              <Button 
+                onClick={handleSubmit} 
+                disabled={loading || selectedFiles.length === 0}
+                className="px-8 py-3 bg-primary hover:bg-primary-hover text-primary-foreground font-medium border border-border"
+                variant="outline"
+              >
+                {loading ? 'Processing...' : 'Submit Question'}
+              </Button>
+            </div>
+          </Card>
+        </section>
 
         {/* Results */}
         {result && (
-          <Card className="p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-foreground">Result</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={copyToClipboard}
-                className="flex items-center gap-2"
-              >
-                <Copy className="w-4 h-4" />
-                Copy
-              </Button>
-            </div>
-            <div className="bg-surface p-4 rounded-lg border border-border">
-              <p className="text-foreground whitespace-pre-wrap">{result}</p>
-            </div>
-          </Card>
+          <section>
+            <Card className="p-6 space-y-4 border border-border">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-foreground">Analysis Result</h2>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={copyToClipboard}
+                  className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-primary-foreground border border-border"
+                  aria-label="Copy result to clipboard"
+                >
+                  <Copy className="w-4 h-4" />
+                  Copy
+                </Button>
+              </div>
+              <div className="bg-surface p-4 rounded-lg border border-border">
+                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{result}</p>
+              </div>
+            </Card>
+          </section>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
