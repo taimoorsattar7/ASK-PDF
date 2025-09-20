@@ -58,10 +58,9 @@ const Index = () => {
 
     try {
       const formData = new FormData();
-      selectedFiles.forEach((file, index) => {
-        formData.append(`file_${index}`, file);
+      selectedFiles.forEach((file) => {
+        formData.append('file', file);
       });
-      formData.append('question', question);
 
       const { data, error } = await supabase.functions.invoke('extract-text-pdf', {
         body: formData,
@@ -71,7 +70,26 @@ const Index = () => {
         throw error;
       }
 
-      setResult(data?.result || 'No result returned');
+      const pdfText = JSON.stringify(data);
+      
+      const response = await fetch('https://cmfspyd53pg0823qu9fdad3fi.agent.a.smyth.ai/api/answer_pdf_question', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pdf_text: pdfText,
+          question: question
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get answer from AI service');
+      }
+
+      const aiResponse = await response.json();
+      setResult(aiResponse.answer || 'No answer returned');
+      
       toast({
         title: "Analysis complete",
         description: "Your PDF analysis is ready.",
