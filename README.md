@@ -1,15 +1,14 @@
-# Ask PDF - AI-Powered Document Analysis
+# AskPDF – AI-Powered Q&A for Your Documents
 
-A modern web application that enables users to upload multiple PDF documents and ask questions about their content using advanced AI technology. Get instant, intelligent answers from your documents with a clean, minimalist interface.
+<img width="420" height="197" alt="logo" src="https://github.com/user-attachments/assets/b3ffc172-7a40-4696-81b6-4bade047d724" />
+
+This website allows you to upload multiple PDFs and ask questions about their content. Instead of spending hours searching through documents, you can get the answers you need in just one click.
 
 ## 🚀 Features
 
 - **Multi-PDF Upload**: Upload and analyze multiple PDF documents simultaneously
 - **AI-Powered Q&A**: Ask natural language questions about your document content
 - **Instant Answers**: Get intelligent responses powered by advanced AI models
-- **Clean Interface**: Minimalist design with #EBEBEB color scheme for optimal readability
-- **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
-- **SEO Optimized**: Fully optimized for search engines with proper meta tags and structured data
 - **Secure Processing**: Documents are processed securely using Supabase edge functions
 
 ## 🛠️ Technology Stack
@@ -17,127 +16,21 @@ A modern web application that enables users to upload multiple PDF documents and
 - **Frontend**: React 18 with TypeScript
 - **Styling**: Tailwind CSS with custom design system
 - **UI Components**: shadcn/ui component library
-- **Backend**: Supabase (Edge Functions, Database)
 - **Build Tool**: Vite
-- **AI Integration**: Custom AI API for document analysis
+- **AI**: Smythos AI Agent
 - **File Processing**: PDF text extraction via Supabase functions
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React App     │    │  Supabase Edge   │    │   AI Service    │
-│                 │    │    Functions     │    │                 │
-│ • File Upload   ├────┤                  ├────┤ • Text Analysis │
-│ • Q&A Interface │    │ • PDF Processing │    │ • Answer Gen    │
-│ • Results Display│    │ • Text Extract   │    │                 │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-```
+The website is built using React, Supabase, and Smythos. 
 
-## 🚀 Getting Started
+<img width="3335" height="624" alt="arch" src="https://github.com/user-attachments/assets/bdd1f8fd-c771-4758-b49a-57228d2032a0" />
 
-### Prerequisites
 
-- Node.js (v18 or higher)
-- npm or yarn package manager
-- Supabase account for backend services
+Here's the workflow of the Smythos AI agent.
 
-### Installation
+<img width="960" height="381" alt="Screenshot 2025-09-20 211715" src="https://github.com/user-attachments/assets/8d883aeb-1ee9-41b6-acaf-c238cbbaf766" />
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ask-pdf
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Environment Setup**
-   
-   Create a `.env` file in the root directory:
-   ```env
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
-   VITE_SUPABASE_PROJECT_ID=your_project_id
-   ```
-
-4. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   
-   Navigate to `http://localhost:5173`
-
-## 🔧 Configuration
-
-### Supabase Setup
-
-1. Create a new Supabase project
-2. Deploy the `extract-text-pdf` edge function
-3. Configure CORS settings for your domain
-4. Update environment variables with your project credentials
-
-### AI Service Configuration
-
-The app integrates with an external AI service for document analysis. Ensure the AI endpoint is properly configured and accessible.
-
-## 📱 Usage
-
-1. **Upload PDFs**: Click the file input to select one or more PDF documents
-2. **Ask Questions**: Type your question about the document content in the textarea
-3. **Get Answers**: Click "Submit Question" to process your request
-4. **View Results**: The AI-generated answer will appear below the form
-5. **Copy Results**: Use the copy button to save answers to your clipboard
-
-## 🎨 Design System
-
-The application uses a minimal design approach with:
-
-- **Primary Color**: #EBEBEB and its variations
-- **Background**: Clean white (#FFFFFF)
-- **Typography**: System fonts with proper contrast ratios
-- **Components**: Semantic HTML with ARIA labels for accessibility
-- **Responsive**: Mobile-first design with breakpoints for all devices
-
-## 🔒 Security & Privacy
-
-- PDF processing happens on secure Supabase edge functions
-- No documents are permanently stored on our servers
-- All communications are encrypted in transit
-- User data is processed according to privacy best practices
-
-## 📊 SEO Features
-
-- **Meta Tags**: Comprehensive meta tags for social sharing
-- **Structured Data**: JSON-LD markup for search engines
-- **Semantic HTML**: Proper heading hierarchy and landmarks
-- **Performance**: Optimized loading and Core Web Vitals
-- **Mobile-Friendly**: Responsive design with proper viewport settings
-
-## 🚀 Deployment
-
-### Using Lovable Platform
-
-1. Connect your GitHub repository to Lovable
-2. Click the "Publish" button in the Lovable editor
-3. Your app will be deployed automatically
-
-### Manual Deployment
-
-1. **Build the project**
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to your preferred platform**
-   - Netlify: Connect GitHub repository and deploy
-   - Vercel: Import project and configure build settings
-   - AWS S3/CloudFront: Upload build files to S3 bucket
 
 ## 🤝 Contributing
 
@@ -158,15 +51,6 @@ If you encounter any issues or have questions:
 1. Check the [Issues](../../issues) section
 2. Create a new issue with detailed information
 3. Provide steps to reproduce any bugs
-
-## 🔄 Changelog
-
-### v1.0.0 (Latest)
-- Initial release with PDF upload and AI Q&A functionality
-- Minimalist design with #EBEBEB color scheme
-- SEO optimization and accessibility features
-- Supabase integration for backend services
-
 ---
 
-**Built with ❤️ using React, Supabase, and AI technology**
+**Built with ❤️ using React, Supabase, and Smythos AI Agent**
