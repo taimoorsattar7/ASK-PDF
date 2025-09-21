@@ -113,9 +113,7 @@ const Index = () => {
           
           <div className="space-y-2">
             
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Upload multiple PDF documents and ask questions to get instant, intelligent answers about their content using advanced AI technology.
-            </p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Upload multiple PDFs, ask questions, and get instant answers—no more hours of searching through documents.</p>
           </div>
         </header>
 
