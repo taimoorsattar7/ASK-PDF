@@ -119,7 +119,7 @@ const Index = () => {
 
         {/* Main Form */}
         <section>
-          <Card className="p-8 space-y-6 border border-border">
+          <Card className="p-8 space-y-6 border border-border rounded-none">
             {/* PDF Upload */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground">
@@ -143,9 +143,9 @@ const Index = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-center">
-              <Button onClick={handleSubmit} disabled={loading || selectedFiles.length === 0} className="px-8 py-3 bg-primary hover:bg-primary-hover text-primary-foreground font-medium border border-border" variant="outline">
-                {loading ? 'Processing...' : 'Submit Question'}
+            <div className="flex justify-start">
+              <Button onClick={handleSubmit} disabled={loading || selectedFiles.length === 0} className="px-6 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-medium border border-border rounded-none" variant="outline">
+                {loading ? 'Processing...' : 'Get Answer'}
               </Button>
             </div>
           </Card>
@@ -153,20 +153,25 @@ const Index = () => {
 
         {/* Results */}
         {result && <section>
-            <Card className="p-6 space-y-4 border border-border">
+            <Card className="p-6 space-y-4 border border-border rounded-none">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-foreground">Analysis Result</h2>
-                <Button variant="outline" size="sm" onClick={copyToClipboard} className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-primary-foreground border border-border" aria-label="Copy result to clipboard">
+                <Button variant="outline" size="sm" onClick={copyToClipboard} className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-primary-foreground border border-border rounded-none" aria-label="Copy result to clipboard">
                   <Copy className="w-4 h-4" />
                   Copy
                 </Button>
               </div>
-              <div className="bg-surface p-4 rounded-lg border border-border">
+              <div className="bg-surface p-4 border border-border rounded-none">
                 <p className="text-foreground whitespace-pre-wrap leading-relaxed">{result}</p>
               </div>
             </Card>
           </section>}
       </div>
+      
+      {/* Footer */}
+      <footer className="text-center py-8 mt-12 border-t border-border">
+        <p className="text-sm text-muted-foreground">Built with ❤️ by Taimoor using React, Supabase, and Smythos AI Agent</p>
+      </footer>
     </main>;
 };
 export default Index;
